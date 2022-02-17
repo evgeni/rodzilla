@@ -7,11 +7,12 @@ module Rodzilla
     # username - The String containing the bugzilla authorized users username
     # password - The String containing the bugzilla authorized users password
     # format - The request/response format which defaults to :json
-    def initialize(base_url, username, password, format=:json, options={})
+    def initialize(base_url, username=nil, password=nil, format=:json, token=nil, options={})
       @base_url     = base_url
       @username     = username
       @password     = password
       @format       = format
+      @token        = token
       @options      = options || {}
     end
 

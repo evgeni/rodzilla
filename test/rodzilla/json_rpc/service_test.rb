@@ -18,6 +18,12 @@ describe Rodzilla::JsonRpc::Service do
     s.credentials.must_equal({ Bugzilla_login: "user", Bugzilla_password: "passwd" })
   end
 
+  it "must set Authorization header with Bearer token on initialize" do
+    s = Rodzilla::JsonRpc::Service.new('http://bugzilla.test.com/jsonrpc.cgi', nil, nil, 'abcdef0123456789')
+    s.instance_variable_get(:@credentials).wont_be_nil
+    s.credentials.must_equal({ Authorization: "Bearer abcdef0123456789" })
+  end
+
   it "execute_request_and_response should return the Response#result" do
     s = Rodzilla::JsonRpc::Service.new('http://bugzilla.test.com/jsonrpc.cgi', 'user', 'passwd')
     res = s.execute_request_and_response(:post)

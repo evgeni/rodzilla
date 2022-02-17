@@ -8,15 +8,22 @@ module Rodzilla
       attr_accessor :rpc_request, :rpc_response,
                     :username, :password, :credentials, :url, :options
 
-      def initialize(url, username, password)
+      def initialize(url, username=nil, password=nil, token=nil)
         @url = url
         @options = {}
         @username = username
         @password = password
-        @credentials = {
-          Bugzilla_login: @username,
-          Bugzilla_password: @password
-        }
+        @token = token
+        if @token
+          @credentials = { Authorization: "Bearer #{@token}" }
+        elsif @username && @password
+          @credentials = {
+            Bugzilla_login: @username,
+            Bugzilla_password: @password
+          }
+        else
+          @credentials = {}
+        end
         setup_request
       end
       

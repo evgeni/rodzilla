@@ -7,18 +7,13 @@ describe Rodzilla::WebService do
   end
 
   describe "Constructor" do
-    it "should accept 4 parameters: base_url, username, password, and format" do
-      s = Rodzilla::WebService.new('http://example.io', 'uname', 'passwd', :json)
+    it "should accept 5 parameters: base_url, username, password, format and token" do
+      s = Rodzilla::WebService.new('http://example.io', 'uname', 'passwd', :json, 'abcdef123456789')
       s.instance_variable_get(:@username).must_equal('uname')
       s.instance_variable_get(:@password).must_equal('passwd')
+      s.instance_variable_get(:@token).must_equal('abcdef123456789')
       s.base_url.must_equal('http://example.io')
       s.format.must_equal(:json)
-    end
-
-    it "should raise an ArgumentError if base_url, username, and password are not given" do
-      Proc.new do
-        Rodzilla::WebService.new('http://example.io', 'uname')
-      end.must_raise(ArgumentError)
     end
 
     it "should by default set the format to json" do

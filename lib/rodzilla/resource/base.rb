@@ -1,13 +1,14 @@
 module Rodzilla
   module Resource
     class Base
-      attr_accessor :base_url, :username, :password, :service, :format
-      
-      def initialize(base_url, username, password, format=:json)
+      attr_accessor :base_url, :username, :password, :service, :format, :token
+
+      def initialize(base_url, username, password, format=:json, token=nil)
         @base_url = base_url
         @username = username
         @password = password
         @format = format
+        @token = token
 
         setup_service(format)
       end
@@ -32,7 +33,7 @@ module Rodzilla
           case format
           when :json
             @endpoint_url = set_endpoint_url(:json)
-            @service  = Rodzilla::JsonRpc::Service.new(@endpoint_url, @username, @password)
+            @service  = Rodzilla::JsonRpc::Service.new(@endpoint_url, @username, @password, @token)
           end
         end
 
