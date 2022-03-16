@@ -14,9 +14,7 @@ module Rodzilla
         @username = username
         @password = password
         @token = token
-        if @token
-          @credentials = { Authorization: "Bearer #{@token}" }
-        elsif @username && @password
+        if @username && @password
           @credentials = {
             Bugzilla_login: @username,
             Bugzilla_password: @password
@@ -78,6 +76,9 @@ module Rodzilla
         def setup_request
           @rpc_request = Rodzilla::JsonRpc::Request.new do |request|
             request.headers = { 'Content-Type' => 'application/json-rpc' }
+            if @token
+              request.headers['Authorization'] = "Bearer #{@token}"
+            end
             request.id = generate_cycle_id
           end
         end
