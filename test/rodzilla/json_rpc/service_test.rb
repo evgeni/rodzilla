@@ -20,8 +20,9 @@ describe Rodzilla::JsonRpc::Service do
 
   it "must set Authorization header with Bearer token on initialize" do
     s = Rodzilla::JsonRpc::Service.new('http://bugzilla.test.com/jsonrpc.cgi', nil, nil, 'abcdef0123456789')
-    s.instance_variable_get(:@credentials).wont_be_nil
-    s.credentials.must_equal({ Authorization: "Bearer abcdef0123456789" })
+    s.instance_variable_get(:@credentials).must_be_empty
+    s.send(:setup_request)
+    s.rpc_request.headers.must_equal({ 'Content-Type' => 'application/json-rpc', "Authorization" => "Bearer abcdef0123456789" })
   end
 
   it "execute_request_and_response should return the Response#result" do
